@@ -1,105 +1,168 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>お金スタイル動物診断</title>
-<style>
-  body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f5; color: #1d3b34; margin: 0; padding: 0; }
-  header { background-color: #1d3b34; color: white; padding: 1rem; text-align: center; }
-  h1, h2 { color: #1d3b34; }
-  main { max-width: 800px; margin: auto; padding: 1.5rem; }
-  .question { margin-bottom: 2rem; }
-  button { background-color: #2e5d4d; color: white; padding: 0.8rem 1.2rem; border: none; border-radius: 5px; cursor: pointer; }
-  button:hover { background-color: #24493c; }
-  .result { background-color: white; border-radius: 8px; padding: 1rem; margin-top: 1.5rem; box-shadow: 0 0 8px rgba(0,0,0,0.1); }
-</style>
+  <meta charset="UTF-8">
+  <title>ライフプラン相談 | 50代からの家計見直し</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      line-height: 1.8;
+      margin: 0;
+      color: #333;
+      background: #f9f9f9;
+    }
+    header {
+      background: #ffffff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .sub {
+      color: #666;
+      font-size: 14px;
+    }
+    section {
+      background: #fff;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    h2 {
+      border-left: 5px solid #4CAF50;
+      padding-left: 10px;
+      font-size: 20px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .cta {
+      text-align: center;
+      margin: 30px 0;
+    }
+    .cta a {
+      background: #4CAF50;
+      color: #fff;
+      padding: 15px 25px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
 </head>
+
 <body>
+
 <header>
-  <h1>お金スタイル動物診断</h1>
-  <p>7つの質問に答えて、あなたのお金のタイプを診断します</p>
+  <h1>
+    スマホ代と家計を見直して、将来の不安を減らす。<br>
+    50代からのやさしいライフプラン相談
+  </h1>
+  <p class="sub">
+    老後資金の見える化まで、マンツーマンで丁寧にサポートします。
+  </p>
+
+  <div class="cta">
+    <a href="#">毎月1名限定｜初回無料相談はこちら</a>
+  </div>
 </header>
-<main>
-  <div id="quiz"></div>
-  <div id="result" class="result" style="display:none;"></div>
-</main>
-<script>
-const questions = [
-  { q: "月々の家計管理はどのくらいしていますか？", a: [
-    { text: "毎月細かく記録", score: [2,0,0,0,0,1,0,0] },
-    { text: "ざっくり把握", score: [0,2,0,0,0,0,0,1] },
-    { text: "ほとんどしない", score: [0,0,0,0,1,0,0,2] },
-    { text: "家族と一緒にチェック", score: [0,0,0,0,0,0,2,0] }
-  ]},
-  { q: "お金の使い方で大事にしていることは？", a: [
-    { text: "将来のための貯蓄", score: [2,0,0,1,0,2,0,0] },
-    { text: "今の楽しみ優先", score: [0,2,0,0,1,0,0,2] },
-    { text: "必要な時に必要な分だけ", score: [0,1,2,0,0,0,1,0] },
-    { text: "家族や仲間との共有", score: [0,0,0,0,0,0,2,0] }
-  ]},
-  { q: "投資に対する考え方は？", a: [
-    { text: "低リスクでコツコツ", score: [2,0,0,1,0,1,0,0] },
-    { text: "中リスクでも積極的に", score: [0,2,1,0,2,0,0,0] },
-    { text: "全く興味がない", score: [0,0,0,0,0,0,0,2] },
-    { text: "専門家に任せる", score: [1,0,2,0,0,1,0,0] }
-  ]},
-  { q: "収入が増えたらどうしますか？", a: [
-    { text: "貯蓄や資産運用に回す", score: [2,0,0,1,0,2,0,0] },
-    { text: "旅行や趣味に使う", score: [0,2,0,0,1,0,0,2] },
-    { text: "事業や勉強に投資", score: [0,0,2,0,2,0,0,0] },
-    { text: "家族にプレゼント", score: [0,0,0,0,0,0,2,0] }
-  ]},
-  { q: "お金に関する情報収集は？", a: [
-    { text: "定期的にしている", score: [1,0,0,2,0,1,0,0] },
-    { text: "必要な時だけ", score: [0,2,2,0,1,0,0,1] },
-    { text: "ほとんどしない", score: [0,0,0,0,2,0,0,2] },
-    { text: "家族や友人から得る", score: [0,0,0,0,0,0,2,0] }
-  ]},
-  { q: "予想外の支出があったときは？", a: [
-    { text: "予備費でカバー", score: [2,0,0,1,0,2,0,0] },
-    { text: "臨時収入や貯金を崩す", score: [0,2,1,0,1,0,0,0] },
-    { text: "借入も検討する", score: [0,0,2,0,2,0,0,1] },
-    { text: "家族と相談する", score: [0,0,0,0,0,0,2,0] }
-  ]},
-  { q: "理想のお金との付き合い方は？", a: [
-    { text: "計画的で安心できる状態", score: [2,0,0,1,0,2,0,0] },
-    { text: "自由で制限のない状態", score: [0,2,0,0,1,0,0,2] },
-    { text: "挑戦できる環境", score: [0,0,2,0,2,0,0,0] },
-    { text: "家族も安心できる状態", score: [0,0,0,0,0,0,2,0] }
-  ]}
-];
-const animals = [
-  { name: "カメタイプ（堅実型）", desc: "コツコツ貯める慎重派。長期的安定を重視します。" },
-  { name: "ウサギタイプ（瞬発型）", desc: "チャンスを逃さない勢い型。ただし計画性に課題あり。" },
-  { name: "クマタイプ（長期戦型）", desc: "大きな目標に向けじっくり準備するタイプ。" },
-  { name: "キツネタイプ（工夫型）", desc: "節約や情報収集が得意なタイプ。" },
-  { name: "タカタイプ（チャレンジ型）", desc: "積極的に挑戦するがリスク管理は要注意。" },
-  { name: "リスタイプ（貯め込み型）", desc: "安心のために貯蓄優先。機会損失に注意。" },
-  { name: "ペンギンタイプ（協力型）", desc: "家族や仲間と一緒に計画する協調派。" },
-  { name: "ネコタイプ（マイペース型）", desc: "自分の満足感を優先する自由派。" }
-];
-let currentQ = 0, scores = Array(8).fill(0);
-const quizDiv = document.getElementById('quiz');
-function showQuestion(){
-  const q = questions[currentQ];
-  quizDiv.innerHTML = `<div class='question'><h2>Q${currentQ+1}. ${q.q}</h2>${q.a.map((opt,i)=>`<button onclick='answer(${i})'>${opt.text}</button>`).join('<br><br>')}</div>`;
-}
-function answer(i){
-  const s = questions[currentQ].a[i].score;
-  scores = scores.map((v,idx) => v + s[idx]);
-  currentQ++;
-  if(currentQ < questions.length){ showQuestion(); }
-  else { showResult(); }
-}
-function showResult(){
-  const maxIndex = scores.indexOf(Math.max(...scores));
-  const resultDiv = document.getElementById('result');
-  resultDiv.style.display = 'block';
-  resultDiv.innerHTML = `<h2>あなたは「${animals[maxIndex].name}」です</h2><p>${animals[maxIndex].desc}</p>`;
-  quizDiv.innerHTML = '';
-}
-showQuestion();
-</script>
+
+<section>
+  <h2>こんなお悩みありませんか？</h2>
+  <ul>
+    <li>スマホ代、見直したいと思いながらそのままになっている</li>
+    <li>今の料金プランが自分に合っているのか正直わからない</li>
+    <li>家計を整えたいけど、何から始めればいいのか迷っている</li>
+    <li>このままの生活で、老後のお金は足りるのか不安</li>
+    <li>頑張って節約しているのに、思ったように貯まらない</li>
+    <li>将来のことを考えたいけど、気軽に相談できる相手がいない</li>
+  </ul>
+  <p>
+    そんな方のために、スマホ代の見直しから家計全体を一緒に整えます。
+  </p>
+</section>
+
+<section>
+  <h2>サービス内容</h2>
+
+  <h3>① 家計見直し＋スマホ料金最適化サポート</h3>
+  <p>
+    スマホ代や通信費など、毎月の固定費から無理なく見直し、家計全体を整えます。
+  </p>
+
+  <h3>② ライフプランシミュレーション</h3>
+  <p>
+    将来の資金の流れを見える化し、「このままで大丈夫か」を数字で確認できます。
+  </p>
+
+  <h3>③ 継続サポート（希望者のみ）</h3>
+  <p>
+    状況に応じて定期的に見直しを行い、安心して続けられる家計づくりをサポートします。
+  </p>
+</section>
+
+<section>
+  <h2>サービスの流れ</h2>
+  <ol>
+    <li>お問い合わせ</li>
+    <li>初回相談（ヒアリング）</li>
+    <li>改善提案</li>
+    <li>実行サポート</li>
+  </ol>
+</section>
+
+<section>
+  <h2>料金</h2>
+  <p><strong>初回相談：毎月1名限定で無料</strong></p>
+  <p>※継続サポートは内容に応じてご案内いたします。</p>
+</section>
+
+<section>
+  <h2>プロフィール</h2>
+  <p>
+    はじめまして。ファイナンシャルプランナーの〇〇です。<br><br>
+
+    家計や将来のお金について、「このままで大丈夫なのか」と不安を感じながらも、何から始めればよいかわからないという方は多くいらっしゃいます。<br><br>
+
+    私はそうした不安に対して、一人ひとりの状況に合わせて丁寧に整理し、無理のない形で家計を整えるサポートを行っています。<br><br>
+
+    ファイナンシャル・プランニング技能士1級の知識をもとに、家計の見直しから老後資金の見える化まで、わかりやすくご説明いたします。<br><br>
+
+    お金のことは難しく感じやすいですが、本来は「生活を安心して送るためのもの」です。<br>
+    無理な節約ではなく、その方に合った形で整えていくことを大切にしています。<br><br>
+
+    「こんなことを聞いてもいいのかな？」という内容でも大丈夫です。<br>
+    どうぞお気軽にご相談ください。
+  </p>
+
+  <h2>資格</h2>
+  <ul>
+    <li>ファイナンシャル・プランニング技能士1級（国家資格）</li>
+    <li>AFP（ファイナンシャル・プランナー）</li>
+    <li>CFP資格取得に向けて学習中</li>
+  </ul>
+
+  <p>
+    ※家計・資産設計に関する専門知識をもとに、わかりやすく丁寧なサポートを心がけています。
+  </p>
+</section>
+
+<section class="cta">
+  <a href="#">毎月1名限定｜初回無料相談はこちら</a>
+</section>
+
+<footer>
+  © ライフプラン相談
+</footer>
+
 </body>
 </html>
